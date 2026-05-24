@@ -39,8 +39,45 @@ namespace AdvancedCalculator
             UpdateMemoryIndicator();
         }
 
-        // Window Controls
-        private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+        // Window Controls - proper drag without stealing button clicks
+        private bool _isDragging = false;
+        private Point _dragStart;
+
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                _isDragging = true;
+                _dragStart = e.GetPosition(this);
+                CaptureMouse();
+            }
+        }
+
+        private void TitleBar_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isDragging)
+            {
+                _isDragging = false;
+                ReleaseMouseCapture();
+            }
+        }
+
+        private void TitleBar_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDragging && e.LeftButton == MouseButtonState.Pressed)
+            {
+                var currentPos = e.GetPosition(this);
+                var offset = currentPos - _dragStart;
+                Left += offset.X;
+                Top += offset.Y;
+            }
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e) => WindowState = WindowState.Minimized;
+        private void Maximize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+        }
         private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
 
         // Keyboard Support

@@ -4,11 +4,11 @@
         Title="Advanced Calculator" Height="680" Width="450"
         WindowStyle="None" WindowStartupLocation="CenterScreen"
         Background="Transparent" AllowsTransparency="True"
-        MouseLeftButtonDown="Window_MouseLeftButtonDown"
-        ResizeMode="CanResizeWithGrip">
+        ResizeMode="CanResizeWithGrip"
+        WindowState="Normal">
     
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="30" GlassFrameThickness="0"/>
+        <WindowChrome CaptionHeight="0" GlassFrameThickness="0" ResizeBorderThickness="5"/>
     </WindowChrome.WindowChrome>
     
     <Border Background="{StaticResource BgPrimary}" BorderBrush="{StaticResource GlassBorder}" BorderThickness="1" CornerRadius="16">
@@ -21,19 +21,50 @@
             </Grid.RowDefinitions>
             
             <!-- Title Bar -->
-            <Grid Grid.Row="0" Background="{StaticResource BgSecondary}" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+            <Grid Grid.Row="0" Background="{StaticResource BgSecondary}" MouseLeftButtonDown="TitleBar_MouseDown" MouseLeftButtonUp="TitleBar_MouseUp" MouseMove="TitleBar_MouseMove">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="0" Text="Advanced Calculator" Foreground="{StaticResource TextSecondary}" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0"/>
-                <Button Grid.Column="1" Content="✕" Width="36" Height="30" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextSecondary}" FontSize="14" Click="CloseButton_Click">
+                <TextBlock Grid.Column="0" Text="Advanced Calculator" Foreground="{StaticResource TextSecondary}" FontFamily="Segoe UI" FontSize="12" VerticalAlignment="Center" Margin="15,0,0,0" IsHitTestVisible="False"/>
+                
+                <Button x:Name="MinimizeBtn" Grid.Column="1" Content="─" Width="36" Height="30" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextSecondary}" FontSize="14" Click="Minimize_Click">
                     <Button.Style>
                         <Style TargetType="Button">
                             <Setter Property="Cursor" Value="Hand"/>
                             <Style.Triggers>
                                 <Trigger Property="IsMouseOver" Value="True">
-                                    <Setter Property="Foreground" Value="{StaticResource Accent}"/>
+                                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                    <Setter Property="Background" Value="rgba(255,255,255,0.1)"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <Button x:Name="MaximizeBtn" Grid.Column="2" Content="□" Width="36" Height="30" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextSecondary}" FontSize="14" Click="Maximize_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                
+                <Button x:Name="CloseBtn" Grid.Column="3" Content="✕" Width="36" Height="30" Background="Transparent" BorderThickness="0" Foreground="{StaticResource TextSecondary}" FontSize="14" Click="CloseButton_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="White"/>
+                                    <Setter Property="Background" Value="#e94560"/>
                                 </Trigger>
                             </Style.Triggers>
                         </Style>
